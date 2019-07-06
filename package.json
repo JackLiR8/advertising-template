@@ -1,0 +1,17 @@
+{
+    "name": "advertising-template",
+    "version": "1.0.0",
+    "devDependencies": {
+        "@babel/core": "^7.5.0",
+        "babel-preset-env": "^1.7.0",
+        "gulp": "^3.9.1",
+        "gulp-babel": "^8.0.0",
+        "gulp-concat": "^2.6.1",
+        "gulp-rename": "^1.4.0",
+        "gulp-sass": "^4.0.2",
+        "gulp-uglify": "^3.0.2"
+    },
+    "dependencies": {
+        "node-sass": "^4.12.0"
+    }
+}
