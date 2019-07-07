@@ -4,6 +4,11 @@ var uglify = require('gulp-uglify')
 var rename = require('gulp-rename')
 var babel = require('gulp-babel')
 var sass = require('gulp-sass')
+var htmlmin = require('gulp-htmlmin')
+var livereload = require('gulp-livereload')
+var connect = require('gulp-connect')
+var gulpLoadPlugins = require('gulp-load-plugins')
+const plugins = gulpLoadPlugins()
 
 sass.compiler = require('node-sass')
 
@@ -18,6 +23,8 @@ gulp.task('script',function(){
             })
         )
         .pipe(gulp.dest('./dist/js/'))
+        .pipe(livereload())
+        .pipe(connect.reload())
 })
 
 gulp.task('scss',function(){        // 将scss合并、编译成css、重命名
@@ -32,10 +39,38 @@ gulp.task('scss',function(){        // 将scss合并、编译成css、重命名
             })
         )
         .pipe(gulp.dest('dist/css/'))
+        .pipe(livereload())
+        .pipe(connect.reload())
 })
 
-gulp.task('sass:watch', function () {
+/* gulp.task('sass:watch', function () {
     gulp.watch('./src/scss/*.scss', ['scss']);
-});
+}); */
 
-gulp.task('default',['script','scss'])
+gulp.task('html',function(){        // 压缩html
+    return gulp.src('src/*.html')
+        .pipe(
+                htmlmin({
+                    collapseWhitespace:true
+                })
+        )
+        .pipe(gulp.dest('dist/'))
+        .pipe(livereload())
+        .pipe(connect.reload())
+})
+
+gulp.task('watch',function(){   // 监听并自动刷新
+    livereload.listen()
+    gulp.watch(['src/js/*.js','src/scss/*.scss','src/*.html'],['script','scss','html'])
+})
+
+// 实现浏览器的自动刷新
+gulp.task('connect',function(){
+    connect.server({
+        root:'./dist',
+        port:'8092',
+        livereload:true
+    })
+})
+
+gulp.task('default',['script','scss','html','watch','connect'])
