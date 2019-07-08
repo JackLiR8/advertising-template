@@ -11,6 +11,8 @@ var gulpLoadPlugins = require('gulp-load-plugins')
 const plugins = gulpLoadPlugins()
 
 sass.compiler = require('node-sass')
+const env = process.env.NODE_ENV
+let target = env==='production' ? './dist' : './pre'
 
 gulp.task('script',function(){  
     return gulp.src('src/js/*.js')
@@ -22,7 +24,7 @@ gulp.task('script',function(){
                 suffix:'.min'
             })
         )
-        .pipe(gulp.dest('./dist/js/'))
+        .pipe(gulp.dest(`${target}/js/`))
         .pipe(livereload())
         .pipe(connect.reload())
 })
@@ -38,7 +40,7 @@ gulp.task('scss',function(){        // 将scss合并、编译成css、重命名
                 suffix:'.min'
             })
         )
-        .pipe(gulp.dest('dist/css/'))
+        .pipe(gulp.dest(`${target}/css/`))
         .pipe(livereload())
         .pipe(connect.reload())
 })
@@ -54,7 +56,7 @@ gulp.task('html',function(){        // 压缩html
                     collapseWhitespace:true
                 })
         )
-        .pipe(gulp.dest('dist/'))
+        .pipe(gulp.dest(`${target}/`))
         .pipe(livereload())
         .pipe(connect.reload())
 })
@@ -67,10 +69,14 @@ gulp.task('watch',function(){   // 监听并自动刷新
 // 实现浏览器的自动刷新
 gulp.task('connect',function(){
     connect.server({
-        root:'./dist',
+        root:`${target}`,
         port:'8092',
         livereload:true
     })
 })
+if(env === 'production'){
+    gulp.task('default',['script','scss','html'])
+} else {
+    gulp.task('default',['script','scss','html','watch','connect'])
+}
 
-gulp.task('default',['script','scss','html','watch','connect'])

@@ -1,9 +1,14 @@
 {
     "name": "advertising-template",
     "version": "1.0.0",
+    "scripts": {
+        "build":"cross-env NODE_ENV=production gulp",
+        "pre":"cross-env NODE_ENV=preproduction gulp"
+    },  
     "devDependencies": {
         "@babel/core": "^7.5.0",
         "babel-preset-env": "^1.7.0",
+        "cross-env": "^5.2.0",
         "gulp": "^3.9.1",
         "gulp-babel": "^8.0.0",
         "gulp-concat": "^2.6.1",
@@ -11,6 +16,7 @@
         "gulp-htmlmin": "^5.0.1",
         "gulp-livereload": "^4.0.1",
         "gulp-load-plugins": "^2.0.0",
+        "gulp-preprocess": "^3.0.2",
         "gulp-rename": "^1.4.0",
         "gulp-sass": "^4.0.2",
         "gulp-uglify": "^3.0.2"
